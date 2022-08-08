@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>PPT</title>
+</head>
+<body>
+    <header id="tituloJuego">
+        <h1> JUEGO DE PIEDRA PAPEL O TIJERA</h1>
+    </header>
+    <section id="menuInicio">
+        <div id="filaIconos">
+            <img class="imagenMenu" src="assets/imgs/piedra.png" alt="ImagenPiedra">
+            <img class="imagenMenu" src="assets/imgs/papel.png" alt="ImagenPapel">
+            <img class="imagenMenu" src="assets/imgs/tijera.png" alt="ImagenTijera">
+        </div>
+        <div id="panelOpcionesJuego">
+            <div class="panelOpcionesMenu">
+                <h3> SELECCIONE LA DIFICULTAD</h3>
+                <select name="" id="listaDificultades">
+                    <option value="1">Facil</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Dificil</option>
+                </select>
+            </div>
+            <div class="panelOpcionesMenu">
+                <h3> SELECCIONE EL NUMERO DE RONDAS </h3>
+                <input type="text" id="rondas" class="inputOpcionRondas">
+            </div>
+        </div>
+        <input  id="botonJugar" type="button" value="JUGAR" onclick="iniciarJuego()">
+    </section>
+    <div id="panelAlto" style="display:none;">
+        <div id="panelConfig">
+            <input type="button" name="regresar" id="Regresar" value="Menu Principal" onclick="regresar()">
+            <input type="button" name="reiniciar" id="Regresar" value="Reiniciar" onclick="reinciar()">
+        </div>
+        <div id="panelPuntaje">
+            <div id="panelDerecho">
+                <span class="nameJ">JUGADOR : <span id="puntajeJ"> 0 </span> </span>
+                <span class="nameJ">PC      : <span id="puntajeP"> 0 </span></span>
+                <span class="nameJ">EMPATE  : <span id="puntajeE"> 0 </span></span>
+            </div>
+        </div>
+    </div>
+    <section id="panelJuego" style = "display: none"> 
+        <div id="panelCentral">
+            <h2> INICIA EL JUEGO : RONDA <span id="numeroRondas"> 0 </span> </h2>
+            <div id="panelBotones">
+                <span id ="tituloOpciones">Escoje una opción</span>
+                <button class ="botonOpcion" id="1" value="piedra" title="piedra" onclick="jugar(1)">
+                   <img src="assets/imgs/piedra.png" alt="" class="imagenBoton">
+                </button>
+                <button class ="botonOpcion"  id="2" value="papel" title="papel" onclick="jugar(2)">
+                    <img src="assets/imgs/papel.png" alt="" class="imagenBoton">
+                 </button>
+                 <button class ="botonOpcion"  id="3" value="tijera" title="tijera" onclick="jugar(3)">
+                    <img src="assets/imgs/tijera.png" alt="" class="imagenBoton">
+                 </button>
+            </div>
+            <div id="panelPc">
+                <h2 style="margin-right: 10px;"> EL PC SELECCIONO : </h2>
+                <img src="" alt="" id="pcSeleccion" class="imagenBoton">
+            </div>
+        </div>
+    </section>
+    <section id="panelFinal" style = "display: none">
+        <div id="cuadroFinal">
+            <span id="tituloFinal">
+                FIN DEL JUEGO
+            </span>
+            <span id="textoGanador">
+                EL GANADOR DEL JUEGO ES :
+            </span>
+            <span id="ganador">  </span>
+            
+        </div>
+        <input type="button" name="regresar" id="Regresar" value="Menu Principal" onclick="regresar()">
+    </section>
+</body>
+<script>
+
+    let ultimaSeleccion = 0;
+    let numeroRondas = 0;
+    let dificultadJuego = 0;
+    let opcionPc = 0;
+
+    function iniciarJuego(){
+        let rondas = document.getElementById("rondas");
+        try {
+            numeroRondas = parseInt(rondas.value);
+            document.getElementById("numeroRondas").innerText = 1
+            if(numeroRondas > 15){
+                document.getElementById("rondas").value = "";
+                alert("EL MAXIMO NUMERO DE RONDAS POSIBLES SON 15");
+            }else if(numeroRondas > 0){
+                dificultadJuego = document.getElementById("listaDificultades").value;
+                document.getElementById("listaDificultades").value = 1 ;
+                document.getElementById("rondas").value = "";
+                let menu = document.getElementById("menuInicio");
+                menu.style.display = "none";
+                let titulo = document.getElementById("tituloJuego");
+                titulo.style.display = "none";
+                let panelJuego = document.getElementById("panelJuego");
+                panelJuego.style.display = "flex";
+                let panelPuntaje = document.getElementById("panelAlto");
+                panelPuntaje.style.display = "flex";
+                let panelPc = document.getElementById("panelPc");
+                panelPc.style.display = "flex";
+            }else{
+                document.getElementById("rondas").value = "";
+                alert("DEBE DE INGRESAR UN NUMERO VALIDO DE RONDAS");
+            }
+        } catch (error) {
+            document.getElementById("rondas").value = "";
+            alert("DEBE DE INGRESAR UN NUMERO VALIDO DE RONDAS");
+        }
+    }
+
+    function regresar(){
+        let puntajeJ = document.getElementById("puntajeJ");
+        puntajeJ.innerText = 0;
+        let puntajeP = document.getElementById("puntajeP");
+        puntajeP.innerText = 0;
+        let puntajeE = document.getElementById("puntajeE");
+        puntajeE.innerText = 0;
+        document.getElementById("pcSeleccion").src = "";
+        let menu = document.getElementById("menuInicio");
+        menu.style.display = "flex";
+        let titulo = document.getElementById("tituloJuego");
+        titulo.style.display = "flex";
+        let panelJuego = document.getElementById("panelJuego");
+        panelJuego.style.display = "none";
+        let panelPuntaje = document.getElementById("panelAlto");
+        panelPuntaje.style.display = "none";
+    }
+
+    function reinciar(){
+        document.getElementById("pcSeleccion").src = "";
+        let puntajeJ = document.getElementById("puntajeJ");
+        puntajeJ.innerText = 0;
+        let puntajeP = document.getElementById("puntajeP");
+        puntajeP.innerText = 0;
+        let puntajeE = document.getElementById("puntajeE");
+        puntajeE.innerText = 0;
+    }
+
+    function jugar(opcionJugador){
+        console.log(dificultadJuego);
+        if(dificultadJuego == 1){ //FACIL 
+            opcionPc = opcionPc + 1 ;
+            if(opcionPc == 4){
+                opcionPc = 1;
+            }
+        }else if(dificultadJuego == 2){ //MEDIO 
+            let opcionPosible =  getRandom(3)+1;
+            while(opcionPosible == opcionPc){
+                opcionPosible = getRandom(3)+1;
+            }
+            opcionPc = opcionPosible;
+
+        }else{
+            opcionPc =  getRandom(3)+1;
+        }
+        //FALTA AGREGARLE CADA DIFICULTAD TODOO
+        document.getElementById("pcSeleccion").src = "";
+        setTimeout('', 2000);
+        if(opcionPc == 1){
+            document.getElementById("pcSeleccion").src = "assets/imgs/piedra.png"
+        }else if(opcionPc == 2){
+            document.getElementById("pcSeleccion").src = "assets/imgs/papel.png"
+        }else{
+            document.getElementById("pcSeleccion").src = "assets/imgs/tijera.png"
+        }
+        setTimeout('', 3000);
+        let ganador = 0; //EN CASO DE GANAR JUGADOR 1 EN CASO DE GANAR PC -1
+        switch(opcionJugador){
+            case 1: //PIEDRA
+                if(opcionPc == 1){
+                    ganador = 0;
+                }else if(opcionPc == 2){
+                    ganador = -1;
+                }else if(opcionPc == 3){
+                    ganador = 1;
+                }
+                break;
+            case 2: //PAPEL
+                if(opcionPc == 1){
+                    ganador = 1;
+                }else if(opcionPc == 2){
+                    ganador = 0;
+                }else if(opcionPc == 3){
+                    ganador = -1;
+                }
+                break;
+            case 3: //TIJERA
+                if(opcionPc == 1){
+                    ganador = -1;
+                }else if(opcionPc == 2){
+                    ganador = 1;
+                }else if(opcionPc == 3){
+                    ganador = 0;
+                }
+                break;
+        }
+        if(ganador == 1){
+            let puntaje = document.getElementById("puntajeJ");
+            let valorJ =  parseInt(puntaje.innerText) + 1 ;
+            puntaje.innerText = valorJ;
+        }else if(ganador == -1){
+            let puntaje = document.getElementById("puntajeP");
+            let valorP =  parseInt(puntaje.innerText) + 1 ;
+            puntaje.innerText = valorP;
+        }else{
+            let puntaje = document.getElementById("puntajeE");
+            let valorP =  parseInt(puntaje.innerText) + 1 ;
+            puntaje.innerText = valorP;
+        }
+            //CAMBIO DE RONDA Y VERIFICACION DEL FINAL DEL JUEGO
+        if(document.getElementById("numeroRondas").innerText == "FINAL" || document.getElementById("numeroRondas").innerText == "DESEMPATE") {
+            //DEFINO AL GANADOR
+            let pJugador = parseInt(document.getElementById("puntajeJ").innerText);
+            let pPc = parseInt(document.getElementById("puntajeP").innerText);
+            if(pJugador > pPc || pPc > pJugador){
+                let puntajeJ = document.getElementById("puntajeJ");
+                puntajeJ.innerText = 0;
+                let puntajeP = document.getElementById("puntajeP");
+                puntajeP.innerText = 0;
+                let puntajeE = document.getElementById("puntajeE");
+                puntajeE.innerText = 0;
+                document.getElementById("pcSeleccion").src = "";
+                let panelJuego = document.getElementById("panelJuego");
+                panelJuego.style.display = "none";
+                let panelPuntaje = document.getElementById("panelAlto");
+                panelPuntaje.style.display = "none";
+                document.getElementById("panelFinal").style.display = "flex"; 
+                if( pJugador > pPc  ){
+                    document.getElementById("ganador").innerText = "Jugador";
+                }else{
+                    document.getElementById("ganador").innerText = "PC";
+                }
+               
+            }else{
+                document.getElementById("numeroRondas").innerText = "DESEMPATE";
+            }
+        }else{
+            if(parseInt(document.getElementById("numeroRondas").innerText) == numeroRondas - 1){
+            document.getElementById("numeroRondas").innerText = "FINAL";
+            }else{
+                document.getElementById("numeroRondas").innerText = parseInt(document.getElementById("numeroRondas").innerText) + 1;
+            }
+        }
+    }
+
+    function getRandom(max){
+        return Math.floor(Math.random()*max);
+    }
+
+
+
+</script>
+</html>
