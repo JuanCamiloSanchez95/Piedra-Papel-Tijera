@@ -151,6 +151,11 @@
     justify-content: center;
 }
 
+.botonOpcion:hover{
+    background-color: gray;
+
+}
+
 .imagenBoton{
     height: 90px;
 }
